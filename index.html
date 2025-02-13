@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Calculator Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #172745;
+            --secondary: #517a9a;
+            --bg: #172745;
+            --card-bg: #385d8a;
+            --text: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .input-group {
+            padding: 1.5rem;
+            background: var(--bg);
+            border-radius: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+
+        .input-group:hover {
+            transform: translateY(-2px);
+        }
+
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        label {
+            font-weight: 500;
+            color: var(--text);
+            flex: 1;
+        }
+
+        input {
+            width: 140px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            text-align: right;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .results-card {
+            grid-column: 1 / -1;
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metric-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .metric {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .input-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            input {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏡 Real Estate ROI Calculator</h1>
+        
+        <div class="calculator-grid">
+            <!-- Property Details -->
+            <div class="input-group">
+                <h2>Property Details</h2>
+                <div class="input-row">
+                    <label>Purchase Price ($)</label>
+                    <input type="number" id="purchasePrice" value="615000">
+                </div>
+                <div class="input-row">
+                    <label>Lot Value ($)</label>
+                    <input type="number" id="lotValue" value="96000">
+                </div>
+                <div class="input-row">
+                    <label>Closing Costs ($)</label>
+                    <input type="number" id="closingCosts" value="0">
+                </div>
+            </div>
+
+            <!-- Income Section -->
+            <div class="input-group">
+                <h2>Income</h2>
+                <div class="input-row">
+                    <label>Monthly Rent ($)</label>
+                    <input type="number" id="grossRent" value="3000">
+                </div>
+                <div class="input-row">
+                    <label>Pet Fees ($)</label>
+                    <input type="number" id="petFees" value="35">
+                </div>
+            </div>
+
+            <!-- Expenses Section -->
+            <div class="input-group">
+                <h2>Expenses</h2>
+                <div class="input-row">
+                    <label>Maintenance (%)</label>
+                    <input type="number" id="maintenance" value="5">
+                </div>
+                <div class="input-row">
+                    <label>Management Fee (%)</label>
+                    <input type="number" id="managementFee" value="10">
+                </div>
+            </div>
+
+            <!-- Mortgage & Costs -->
+            <div class="input-group">
+                <h2>Fixed Costs</h2>
+                <div class="input-row">
+                    <label>Mortgage ($/mo)</label>
+                    <input type="number" id="mortgage" value="1500">
+                </div>
+                <div class="input-row">
+                    <label>Taxes ($/yr)</label>
+                    <input type="number" id="taxes" value="3000">
+                </div>
+                <div class="input-row">
+                    <label>Insurance ($/yr)</label>
+                    <input type="number" id="insurance" value="3000">
+                </div>
+                <div class="input-row">
+                    <label>HOA ($/mo)</label>
+                    <input type="number" id="hoa" value="100">
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-card">
+            <h2>Annual Results</h2>
+            <div class="metric-group">
+                <div class="metric">
+                    <div class="metric-label">Total Revenue</div>
+                    <div class="metric-value" id="grossRevenue">$0</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Operating Costs</div>
+                    <div class="metric-value" id="operatingExpenses">$0</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Net Income</div>
+                    <div class="metric-value" id="noi">$0</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Total Expenses</div>
+                    <div class="metric-value" id="totalCosts">$0</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">ROI</div>
+                    <div class="metric-value" id="roi">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Same JavaScript calculations as before (fixed syntax error)
+        function calculate() {
+            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+            const lotValue = parseFloat(document.getElementById('lotValue').value) || 0;
+            const closingCosts = parseFloat(document.getElementById('closingCosts').value) || 0;
+            const grossRent = parseFloat(document.getElementById('grossRent').value) || 0;
+            const petFees = parseFloat(document.getElementById('petFees').value) || 0;
+            const maintenance = parseFloat(document.getElementById('maintenance').value)/100 || 0;
+            const managementFee = parseFloat(document.getElementById('managementFee').value)/100 || 0;
+            const mortgage = parseFloat(document.getElementById('mortgage').value) || 0;
+            const taxes = parseFloat(document.getElementById('taxes').value) || 0;
+            const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+            const hoa = parseFloat(document.getElementById('hoa').value) || 0;
+
+            // Calculations
+            const annualRent = grossRent * 12;
+            const annualPetFees = petFees * 12;
+            const grossRevenue = annualRent + annualPetFees;
+            
+            const maintenanceCost = annualRent * maintenance;
+            const managementCost = grossRevenue * managementFee;
+            const operatingExpenses = maintenanceCost + managementCost;
+            
+            const noi = grossRevenue - operatingExpenses;
+            
+            const totalMortgage = mortgage * 12;
+            const totalHOA = hoa * 12;
+            const totalCosts = totalMortgage + taxes + insurance + totalHOA;
+            
+            // Depreciation
+            const costBasis = purchasePrice - lotValue + closingCosts;
+            const depreciation = costBasis / 27.5;
+            
+            // Tax Calculation
+            const taxableIncome = noi - depreciation;
+            const taxRate = 0.28;
+            const taxLiability = taxableIncome * taxRate;
+            
+            // ROI Calculation
+            const appreciation = purchasePrice * 0.03;
+            const principalReduction = 3000;
+            const roi = ((noi - taxLiability + appreciation + principalReduction) / purchasePrice * 100).toFixed(1);
+
+            // Formatting
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0
+            });
+
+            // Update UI
+            document.getElementById('grossRevenue').textContent = formatter.format(grossRevenue);
+            document.getElementById('operatingExpenses').textContent = formatter.format(operatingExpenses);
+            document.getElementById('noi').textContent = formatter.format(noi);
+            document.getElementById('totalCosts').textContent = formatter.format(totalCosts);
+            document.getElementById('roi').textContent = `${roi}%`;
+        }
+
+        // Add event listeners
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', calculate);
+            input.addEventListener('focus', (e) => e.target.select());
+        });
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>
